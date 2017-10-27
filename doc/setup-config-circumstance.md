@@ -1,5 +1,10 @@
 # 配置开发环境
----
+
+- [x] VMware
+- [x] centos
+- [ ] postgresql
+- [ ] apache
+- [ ] geoserver
 
 ## 下载Vmware workstation并安装
 
@@ -37,7 +42,43 @@
 1. 开始安装19:43，设置root密码 atx165, 创建用户全名wangzhiyong,index,atx165
 1. 等待20:08，结束
 
-解决问题：
-1. [不能上网](https://jingyan.baidu.com/article/cd4c2979f7ac63756e6e60d1.html)
-没解决
+## centos Q/A：
 
+### 不能上网
+1. [解决方法一](https://jingyan.baidu.com/article/cd4c2979f7ac63756e6e60d1.html)
+没解决
+1. [解决方法2](https://jingyan.baidu.com/article/fc07f9891d186512ffe51935.html)
+1. [解决方法3](http://blog.csdn.net/sidely/article/details/40984673)
+
+解决步骤:
+
+* 改为桥接模式
+* 找到网络连接界面
+* 手动
+* 输入一个没人用的IP，设置好网关和DNS
+* 重启网络服务 service network restart
+* OK
+
+### [centos关机与重启](./centos-shutdown.md)
+
+### [更新centos下的firefox](http://blog.csdn.net/aoshilang2249/article/details/48630129)
+
+### 中文输入法?
+
+### 安装查看时权限不够
+    su -
+    升级到root权限
+
+## postgresql 启动服务的问题
+
+[CentOS 7 安装、配置、使用 PostgreSQL 9.5（一）安装及基础配置](http://www.jianshu.com/p/7e95fd0bc91a)
+
+### centOS 启动了哪些服务
+
+### 有没有启动postgresql服务
+
+### 怎么启动pg服务
+
+### 怎么关闭PG服务
+
+### 有没有pg图形化客户端
