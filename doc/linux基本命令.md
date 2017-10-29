@@ -75,3 +75,15 @@ rm这个命令可以移除你的文件，甚至移除你的目录。如果文件
 
     $ sudo poweroff 
 
+
+##  wget
+下载文件的命令
+
+安装
+
+    yum install wget
+
+使用
+    
+    ?    
+
