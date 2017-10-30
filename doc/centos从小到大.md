@@ -3,9 +3,10 @@
 
 - [X] postgresql 9.5
 - [x] apache
-- [ ] postgis
-- [ ] tomcat
-- [ ] GeoServer
+- [x] JDK 9.0.1
+- [x] tomcat
+- [x] GeoServer
+- [x] postgis
 
 
 ## 安装最小CentOS
@@ -21,14 +22,22 @@
 [网络教程2](http://blog.csdn.net/sfeng95/article/details/62239539)
 
 ## 安装postgresql
+
+[最好的安装教程是官方教程](http://www.postgresonline.com/journal/archives/362-An-almost-idiots-guide-to-install-PostgreSQL-9.5,-PostGIS-2.2-and-pgRouting-2.1.0-with-Yum.html)
 [网络教程1](http://blog.csdn.net/shanzhizi/article/details/46484481)
 [网络教程1](http://blog.csdn.net/lk10207160511/article/details/50359549)
 
 1. 切换用户
     su
 
-1. 安装PostgreSQL的rpm
-    install http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm -y
+1. 安装PostgreSQL的
+    
+    rpm install http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm -y
+
+1. 验证是否安装成功
+```
+    rpm -aq| grep postgres      
+```
 1. 安装服务和扩展
     yum install postgresql95-server postgresql95-contrib -y
 
@@ -37,11 +46,37 @@
 
 1. 初始化数据库
     initdb
+
 1.  启动数据库服务
+
+* 另一个思路
+
+yum install http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-redhat94-9.4-1.noarch.rpm
+yum install postgresql94-server postgresql94-contrib
+service postgresql-9.4 initdb
+chkconfig postgresql-9.4 on
 
 ## 安装PostGis
 
-？？？
+[教程](http://www.cnblogs.com/flywuya/p/5460997.html)
+
+    - yum install proj.x86_64
+    - yum install geos.x86_64
+    - yum install libxml2.x86_64
+    - yum install json-c.x86_64
+    - rpm -ivh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm   ??
+
+GDAL 装不上。yum 后边 使用 --skip-broken 能执行，但是装不上23个依赖项
+ogr
+postgis
+pgrouting
+
+[编译安装GDAL教程](https://zhuanlan.zhihu.com/p/29417899)
+
+GCC 版本 5.5 6.4 7.2 到底使用哪一个？
+
+从[GDAL管网](http://trac.osgeo.org/gdal/wiki/DownloadSource)下载 gdal 2.2.2 [最新版的代码](http://download.osgeo.org/gdal/2.2.2/gdal-2.2.2.tar.gz)
+
 
 ## 安装Apache
 
@@ -116,6 +151,12 @@
     sudo yum install ftp -y
 
 2. wget 
+    
+    yum install wget -y
+
+3.  unzip
+
+    yum install unzip -y
 
 ## windows 和 centos虚拟机传输文件
 
@@ -123,26 +164,51 @@
 
 2. 安装 putty 
 
+    [A](http://www.linuxidc.com/Linux/2016-08/133991.htm)
+    [B](http://junight.blog.51cto.com/10828785/1708146/)
+
 3. pscp 传输文件到centos
 
+```
+    pscp.exe d:/sharedir/tt.txt gisok@172.30.17.129:/home/gisok
+```
+注意 不要拷贝到没有权限的目录
 
+4. [在Linux虚拟机和物理机之间共享文件夹](https://jingyan.baidu.com/article/fb48e8be3a8e7e6e622e14e3.html)
 
 ## 安装 JDK
 
+[教程1](http://blog.csdn.net/lk10207160511/article/details/50359565)
+[教程2](http://blog.csdn.net/czmchen/article/details/41047187)
+[教程3](http://blog.csdn.net/evan_chen_1/article/details/55097252)
 
+* 安装
+    rpm -ivh jdk.....rpm
 
+* 验证安装
+执行以下操作，查看信息是否正常：
+    [root@localhost ~]# java
+    [root@localhost ~]# javac
+    [root@localhost ~]# java -version
+
+* 修改系统环境变量文件
+
+    vi + /etc/profile
+
+向文件里面追加以下内容：
+
+    JAVA_HOME=/usr/java/jdk1.8.0_25
+    JRE_HOME=/usr/java/jdk1.8.0_25/jre
+    PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+    CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+    export JAVA_HOME JRE_HOME PATH CLASSPATH
 
 
 ## 安装 Tomcat
 
-
-
-
-Tomcat 支持的Java 版本和兼容性总结
-原创 2014年12月28日 16:07:20
+###  Tomcat 支持的Java 版本和兼容性总结
 
 Apache - java - tomcat 版本配合
-
 最新最全的Tomcat 支持的Java版本对照，即兼容性一览表：
 
 | Servlet Spec  |  JSP Spec  |  EL Spec  |   WebSocket Spec | Apache Tomcat  version |  Actual release revision  |   Support Java Versions |
@@ -155,13 +221,56 @@ Apache - java - tomcat 版本配合
  |2.3   | 1.2  |  N/A   |  N/A |  4.1.x (archived) | 4.1.40 (archived) | 1.3 and later |
  |2.2   |  1.1 |   N/A   |  N/A | 3.3.x (archived) | 3.3.2 (archived)  |  1.1 and later |
 
-* 下载压缩包
-    
-    wget http://download.oracle.com/otn-pub/java/jdk/9.0.1+11/jdk-9.0.1_linux-x64_bin.rpm
+###  下载压缩包
 
+[下载页面](https://tomcat.apache.org/download-80.cgi)
 
-[在Linux虚拟机和物理机之间共享文件夹](https://jingyan.baidu.com/article/fb48e8be3a8e7e6e622e14e3.html)
+下载8.5的tar.gz,[文件链接](http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-8/v8.5.23/bin/apache-tomcat-8.5.23.tar.gz)
 
+    wget http://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-8/v8.5.23/bin/apache-tomcat-8.5.23.tar.gz
 
+### 安装教程
+
+[安装教程1](http://blog.csdn.net/uq_jin/article/details/51356799)
+[安装教程2](http://blog.csdn.net/czmchen/article/details/41047455)
+[安装教程3](http://www.cnblogs.com/hapday/p/5616830.html) 这个最好，没有 配置成系统服务
+
+### 安装tomcat 
+
+    [root@localhost ~]# cp apache-tomcat...tar.gz /usr/local
+    [root@localhost ~]# cd /usr/local  
+    [root@localhost ~]# tar -zxv -f apache-tomcat-8.0.14.tar.gz // 解压压缩包  
+    [root@localhost ~]# rm -rf apache-tomcat-8.0.14.tar.gz // 删除压缩包  
+    [root@localhost ~]# mv apache-tomcat-8.0.14.tar.gz  
+
+### 将8080端口添加到防火墙例外并重启
+
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+firewall-cmd --reload
+
+### 启动Tomcat
+
+    cd /opt/soft/apache-tomcat-8.0.33/bin/
+    ./startup.sh
+
+### 停止Tomcat
+
+    [root@localhost ~]# /usr/local/tomcat/bin/shutdown.sh //停止tomcat</span>
 
 ## 安装 Geoserver
+
+[网络教程1](http://www.cnblogs.com/think8848/p/5992736.html)
+[网络教程2](http://tessykandy.iteye.com/blog/1462610)
+
+[下载页面](http://geoserver.org/release/2.12.0/)
+
+[文件地址](http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.0/geoserver-2.12.0-war.zip)
+
+geoserver 2.12  需要Java 8,不是 9
+
+[扩展GeoServer数据源](http://www.cnblogs.com/sillyemperor/p/3862179.html)
+
+
+扩展方式:
+    
+    下载的文件拷贝到..\webapps\geoserver\WEB-INF\lib目录下
