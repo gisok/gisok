@@ -274,3 +274,11 @@ geoserver 2.12  需要Java 8,不是 9
 扩展方式:
     
     下载的文件拷贝到..\webapps\geoserver\WEB-INF\lib目录下
+
+
+## 开机自动启动
+
+- [x] apache
+- [x] postgresql
+- [ ] tomcat
+
